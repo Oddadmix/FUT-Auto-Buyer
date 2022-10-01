@@ -23,6 +23,7 @@ import {
 } from "../../../utils/userExternalUtil";
 import { createButton } from "../ButtonView";
 import { showPopUp } from "../../../utils/popupUtil";
+import { getFilters } from "../../../services/filtersUtil";
 
 const filters = async () => {
   if (!getValue("filters")) {
@@ -38,7 +39,10 @@ const filters = async () => {
       return obj;
     }, {});
 
-  return filters;
+    //
+    const sharedFilters = await (await getFilters()).json()
+
+  return {...filters, ...sharedFilters};
 };
 $(document).on(
   {
@@ -191,7 +195,8 @@ export const filterHeaderSettingsView = async function (isTransferSearch) {
                     ${Object.keys(await filters()).map(
                       (value) => `<option value="${value}">${value}</option>`
                     )}                    
-                 </select>                 
+                 </select>
+                 <!-- todo: add a button to save the current filter -->          
                 ${
                   !isTransferSearch
                     ? generateButton(

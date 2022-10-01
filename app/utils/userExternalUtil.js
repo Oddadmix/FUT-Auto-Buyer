@@ -1,6 +1,7 @@
 import { defaultBuyerSetting, defaultCommonSetting } from "../app.constants";
 import * as ElementIds from "../elementIds.constants";
 import { getValue, getBuyerSettings, setValue } from "../services/repository";
+import { saveFilters, updateFilters } from "../services/filtersUtil";
 import {
   clearSettingMenus,
   updateCommonSettings,
@@ -52,6 +53,7 @@ export const saveFilterDetails = function (self) {
           UINotificationType.NEGATIVE
         );
       }
+      
       saveFilterInDB(filterName, settingsJson);
       insertFilters(
         "CommonSettings",
@@ -74,6 +76,7 @@ export const saveFilterInDB = (filterName, settingsJson) => {
   checkAndAppendOption(`#${ElementIds.idSelectedFilter}`, filterName);
   $(`${filterDropdownId} option[value="${filterName}"]`).attr("selected", true);
   getValue("filters")[filterName] = JSON.stringify(settingsJson);
+  saveFilters();
   insertFilters(filterName, getValue("filters")[filterName]);
 };
 
@@ -151,7 +154,7 @@ export const deleteFilter = async function () {
 
     await clearSettingMenus();
     this.viewDidAppear();
-
+    saveFilters();
     delete getValue("filters")[filterName];
     $(`${selectedFilterId}` + ` option[value="${filterName}"]`).remove();
     updateMultiFilterSettings();
