@@ -154,11 +154,12 @@ export const deleteFilter = async function () {
 
     await clearSettingMenus();
     this.viewDidAppear();
-    saveFilters();
+
     delete getValue("filters")[filterName];
     $(`${selectedFilterId}` + ` option[value="${filterName}"]`).remove();
     updateMultiFilterSettings();
     deleteFilters(filterName);
+    saveFilters();
     sendUINotification("Changes saved successfully");
   }
 };

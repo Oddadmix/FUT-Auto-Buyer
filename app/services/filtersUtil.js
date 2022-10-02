@@ -27,10 +27,12 @@ export const saveFilters = () => {
 }
 
 export const getFilters = ()=>{
+  const email = localStorage.getItem("useremail");
   return fetch(atob("aHR0cHM6Ly9mdXQtZmlsdGVycy5kZW1vLmthbmQuY2EvZmlsdGVycw=="), {
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "REALEMAIL": email.replaceAll("\"","")
     },
     method: "GET",
   });

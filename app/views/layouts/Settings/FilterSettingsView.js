@@ -40,9 +40,13 @@ const filters = async () => {
     }, {});
 
     //
-    const sharedFilters = await (await getFilters()).json()
+  const sharedFilters = await (await getFilters()).json();
+  const finalFilters =  {...filters, ...sharedFilters};
+  
+    setValue("filters", finalFilters);
+  
 
-  return {...filters, ...sharedFilters};
+  return finalFilters;
 };
 $(document).on(
   {
